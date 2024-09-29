@@ -81,24 +81,16 @@ namespace FumoDog.Patches
         
         private void hideModel()
         {
-            Renderer[] componentsInChildren = instance.GetComponentsInChildren<Renderer>();
+            Renderer[] componentsInChildren = instance.GetComponents<Renderer>();
             Renderer[] array = componentsInChildren;
             foreach (Renderer obj in array)
             {
-                if (obj.name == "ZeddogPlushie(Clone)")
-                {
-                    Renderer[] components2 = obj.GetComponentsInChildren<Renderer>();
-                    Renderer[] array2 = components2;
-                    foreach (Renderer obj2 in array2)
-                    {
-                        obj2.enabled = false;
-                    }
-                }
+                if (obj.name == "Fumo(Clone)") continue;
+                obj.enabled = false;
             }
         }
         private void Start()
         {
-            FumoDogBase.Instance.mls.LogInfo(this.name);
             instance = this.GetComponent<GrabbableObject>();
 
             if (FumoDogBase.Models.TryGetValue("fumo", out GameObject value))
@@ -106,14 +98,15 @@ namespace FumoDog.Patches
                 GameObject fumo = UnityEngine.Object.Instantiate<GameObject>(value, instance.gameObject.transform);
                 fumo.name = "Fumo(Clone)";
                 fumo.transform.localPosition = Vector3.zero;
-                fumo.transform.localScale = Vector3.one;
+                fumo.transform.localScale = Vector3.one/3;
+                fumo.transform.localRotation = Quaternion.Euler(-90, -30, 0);
                 Transform transform = fumo.transform;
                 fumo.SetActive(true);
             }
         }
         private void Update()
         {
-            hideModel();
+          hideModel();
         }
     }
 }
